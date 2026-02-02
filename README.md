@@ -1,4 +1,4 @@
-# GeoEmerge_hackathon
+# Bias and Uncertainty in Reported Mosquito Habitat Data
 
 ## Inspiration  
 Mosquito-borne diseases remain a major public health concern, yet predicting mosquito habitat risk depends heavily on the quality and completeness of environmental data. While community science platforms like GLOBE Observer collect large volumes of mosquito observations, we were inspired to explore whether this data is structured in a way that actually supports reliable prediction. Our project was motivated by a simple question: Are we collecting the right data, in the right way, to build effective mosquito habitat models?
