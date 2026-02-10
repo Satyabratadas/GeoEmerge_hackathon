@@ -1,22 +1,123 @@
-# Bias and Uncertainty in Reported Mosquito Habitat Data
+## Bias and Uncertainty in Reported Mosquito Habitat Data
+Analyzing structural bias and data incompleteness in community-reported mosquito habitat observations using GLOBE Observer data.
 
-## Inspiration  
-Mosquito-borne diseases remain a major public health concern, yet predicting mosquito habitat risk depends heavily on the quality and completeness of environmental data. While community science platforms like GLOBE Observer collect large volumes of mosquito observations, we were inspired to explore whether this data is structured in a way that actually supports reliable prediction. Our project was motivated by a simple question: Are we collecting the right data, in the right way, to build effective mosquito habitat models?
+This project investigates how missing environmental context, contributor behavior, and uneven spatial sampling limit predictive modeling of mosquito habitats. Rather than directly training a prediction model, we focus on diagnosing data quality and proposing improvements to future collection pipelines.
 
-## What it does  
-This project analyzes community-reported Mosquito Habitat Mapper and Land Cover data to evaluate how data completeness, user behavior, and sampling bias affect the ability to predict mosquito habitat formation. Rather than focusing solely on mosquito presence, we examine whether the necessary environmental context—such as standing water, vegetation, and surface conditions—is consistently collected alongside mosquito observations. Our analysis identifies gaps in data collection that limit predictive modeling and highlights opportunities to improve future data quality.
+## Motivation
+Mosquito-borne diseases pose a major public health risk. Community science platforms like GLOBE Observer provide large volumes of mosquito observations—but predictive modeling depends on consistent environmental features, not just outcome labels.
 
-## How we built it. 
-We retrieved Mosquito Habitat Mapper and Land Cover observations using the GLOBE API and processed them using Python, Pandas, and GeoPandas. After filtering data spatially to Florida, we performed exploratory data analysis to assess missingness, contributor behavior, spatial clustering, and variable availability. We merged datasets by site ID where possible and visualized observations using geospatial mapping tools to understand coverage patterns and outliers. Our workflow focused on diagnosing structural limitations in the data rather than fitting a final predictive model.
+This project asks:
+- Are we collecting the right data, in the right way, to build reliable mosquito habitat models?
 
-## Challenges we ran into  
-A major challenge was that a large majority of mosquito observations did not have corresponding land cover data at the same site. This significantly reduced the number of usable samples for modeling and introduced bias toward certain users and locations. Additionally, we observed that a small number of contributors accounted for a disproportionate share of extreme larva counts, raising concerns about outlier influence and reporting consistency. Working with incomplete, unevenly sampled community data required careful interpretation to avoid misleading conclusions.
+## Key Findings
+- 87.64% of mosquito observations lack paired land cover data
+- Severe contributor bias: small number of users dominate extreme larval counts
+- Spatial clustering creates geographic sampling imbalance
+- Structural missingness prevents meaningful habitat modeling
+- These issues significantly reduce downstream ML usefulness.
 
-## Accomplishments that we're proud of  
-We identified that approximately 87.64% of mosquito observations lacked accompanying land cover data, revealing a critical limitation in the dataset’s predictive utility. We also uncovered evidence of contributor-driven bias, where a small number of users disproportionately influenced extreme observations. Most importantly, we reframed the problem from “predicting mosquito habitats” to optimizing data collection itself, demonstrating how improvements in reporting structure could dramatically enhance future modeling efforts.
+## Approach
+We analyzed:
+- Mosquito Habitat Mapper observations
+- Land Cover observations
 
-## What we learned  
-This project reinforced that data quantity alone does not guarantee data usefulness. Predictive modeling requires both outcome variables and explanatory environmental features, and missing context can severely limit model performance. We also learned that community science data is shaped by human behavior, effort, and incentives, making bias detection and mitigation essential. Designing better data collection systems is just as important as building better models.
+Workflow:
+1. Pull data via GLOBE API
+2. Filter spatially to Florida
+3. Perform EDA on:
+    - Missingness
+    - Contributor behavior
+    - Spatial clustering
+    - Feature availability
+4. Merge datasets on ```site_id```
+5. Visualize coverage and outliers using GeoPandas 
+Rather than fitting models, we diagnose systemic data limitations.
 
-## What's next for Bias and Uncertainty in Reported Mosquito Habitat Data  
-Future work would focus on developing strategies to reduce sampling bias and improve data completeness, such as encouraging or requiring joint submission of mosquito and land cover observations, weighting observations by contributor behavior, or integrating external environmental datasets like rainfall or temperature. With more consistent environmental data, this project could evolve into a robust mosquito habitat risk modeling framework that better supports public health decision-making.
+## Tech Stack
+- Python 3.9+
+- Pandas
+- GeoPandas
+- NumPy
+- Matplotlib / Seaborn
+- Jupyter Notebook
+
+## Repository Structure
+```
+.
+├── data/                  # Raw + processed CSVs (not tracked if large)
+├── final_analysis.ipynb
+├── globe_api.py           # Data retrieval helpers
+├── requirements.txt
+└── README.md
+
+```
+
+## How to Run Locally
+
+### 1. Clone the Repository
+```
+git clone https://github.com/yourusername/geomerge-mosquito-bias.git
+cd geomerge-mosquito-bias
+```
+
+### 2. Create Virtual Environment (Recommended)
+```
+python -m venv venv
+source venv/bin/activate   # macOS / Linux
+# or
+venv\Scripts\activate      # Windows
+
+```
+
+### 3. Install Dependencies
+```
+pip install -r requirements.txt
+
+```
+If GeoPandas causes issues, install via conda:
+```
+conda create -n mosquito python=3.9 geopandas jupyter pandas matplotlib seaborn
+conda activate mosquito
+
+```
+### 4. Run the Final Analysis Notebook
+```
+jupyter notebook
+```
+Then open:
+```
+notebooks/final_analysis.ipynb
+
+```
+Run cells top-to-bottom.
+This notebook contains:
+- Data ingestion
+- Spatial filtering
+- Missingness analysis
+- Contributor bias detection
+- Visualization
+
+## Dataset
+
+Data retrieved from:
+- GLOBE Mosquito Habitat Mapper
+- GLOBE Land Cover observations
+via public GLOBE API.
+
+## Known Limitations
+- Majority of mosquito records lack environmental context
+- Heavy contributor skew
+- No rainfall / temperature integration
+- Not suitable for supervised ML without structural improvements
+
+## Future Work
+- Enforce joint mosquito + land cover submissions
+- Contributor weighting
+- Integrate NOAA rainfall + temperature
+- Build probabilistic habitat risk model
+- Active learning for sampling guidance
+
+## Hackathon
+Built for **GeoMerge Hackathon 2026**
+
+**Theme**: Data quality before modeling.
